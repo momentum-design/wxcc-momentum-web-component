@@ -30,15 +30,6 @@ jobs:
       - run:
           name: Build web components library
           command: npm run dist
-      - run:
-          name: Unit Test web components library
-          command: npm run test:ci
-      - run:
-          name: Build Storybook
-          command: npm run storybook:dist
-      - run:
-          name: Clear Git changed files
-          command: git checkout -- .
 
 workflows:
   # Below is the definition of your workflow.
