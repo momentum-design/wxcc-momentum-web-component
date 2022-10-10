@@ -77,9 +77,6 @@ workflows:
   lint_test:
     jobs:
       - checkout_install
-      - lint:
-          requires:
-            - checkout_install
       - test_web_components
 
   daily_storybook_deploy:
