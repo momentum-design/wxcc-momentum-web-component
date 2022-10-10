@@ -1,6 +1,6 @@
 definitions:
   image_defaults: &image_defaults
-    working_directory: ~/repo
+    working_directory: .
     docker:
       - image: cypress/included:8.7.0
         environment:
