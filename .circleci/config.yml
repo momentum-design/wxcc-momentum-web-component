@@ -1,6 +1,6 @@
 definitions:
   image_defaults: &image_defaults
-    working_directory: ~/
+    working_directory: ~/repo
     docker:
       - image: cypress/included:8.7.0
         environment:
@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - persist_to_workspace:
-          root: ~/
+          root: ~/repo
           paths:
             - .cache
             - repo
@@ -22,7 +22,7 @@ jobs:
     <<: *image_defaults
     steps:
       - attach_workspace:
-          at: ~/
+          at: ~/repo
       - run: yarn install
       - run:
           name: Build web components library
@@ -41,7 +41,7 @@ jobs:
     <<: *image_defaults
     steps:
       - attach_workspace:
-          at: ~/
+          at: ~/repo
       - run: yarn install
       - run:
           name: Build web components library
@@ -57,7 +57,7 @@ jobs:
     <<: *image_defaults
     steps:
       - attach_workspace:
-          at: ~/
+          at: ~/repo
       - run: yarn install
       - run:
           name: Build web components library
