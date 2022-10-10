@@ -1,6 +1,6 @@
 definitions:
   image_defaults: &image_defaults
-    working_directory: .
+    working_directory: ~/
     docker:
       - image: cypress/included:8.7.0
         environment:
@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - persist_to_workspace:
-          root: .
+          root: ~/
           paths:
             - .cache
             - repo
