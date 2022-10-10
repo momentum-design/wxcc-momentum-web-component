@@ -1,0 +1,95 @@
+definitions:
+  image_defaults: &image_defaults
+    working_directory: ~/repo
+    docker:
+      - image: cypress/included:8.7.0
+        environment:
+          TERM: xterm
+version: 2
+jobs:
+  checkout_install:
+    <<: *image_defaults
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - .cache
+            - repo
+            - .yarn
+
+  test_web_components:
+    <<: *image_defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: yarn install
+      - run:
+          name: Build web components library
+          command: yarn dist
+      - run:
+          name: Unit Test web components library
+          command: yarn test:ci
+      - run:
+          name: Build Storybook
+          command: yarn storybook:dist
+      - run:
+          name: Clear Git changed files
+          command: git checkout -- .
+
+  storybook_web_components:
+    <<: *image_defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: yarn install
+      - run:
+          name: Build web components library
+          command: yarn dist
+      - run:
+          name: Deploy Storybook
+          command: yarn storybook:deploy-ci
+      - run:
+          name: Clear Git changed files
+          command: git checkout -- .
+
+  static_analysis:
+    <<: *image_defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run: yarn install
+      - run:
+          name: Build web components library
+          command: yarn dist
+      - run:
+          name: Unit Test web components library
+          command: yarn test:ci
+      - run:
+          name: Upload Codecov report
+          command: bash <(curl -s https://codecov.io/bash)
+      - run:
+          name: Clear Git changed files
+          command: git checkout -- .
+
+workflows:
+  version: 2
+  lint_test:
+    jobs:
+      - checkout_install
+      - lint:
+          requires:
+            - checkout_install
+      - test_web_components
+
+  daily_storybook_deploy:
+    triggers:
+      - schedule:
+          cron: "30 5 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - storybook_web_components
+
