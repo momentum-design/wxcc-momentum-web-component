@@ -2,7 +2,7 @@ definitions:
   image_defaults: &image_defaults
     working_directory: ~/repo
     docker:
-      - image: cypress/included:9.7.0
+      - image: nikolaik/python3.9-nodejs14
         environment:
           TERM: xterm
 version: 2
