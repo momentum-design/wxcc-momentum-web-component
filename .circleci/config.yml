@@ -6,6 +6,9 @@ definitions:
         environment:
           TERM: xterm
 version: 2
+orbs:
+  node: circleci/node@5
+  cypress: cypress-io/cypress@2.1.0
 jobs:
   checkout_install:
     <<: *image_defaults
