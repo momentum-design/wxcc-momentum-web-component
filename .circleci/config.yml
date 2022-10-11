@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - persist_to_workspace:
-          root: .
+          root: ~/
           paths:
             - .cache
             - repo
@@ -77,6 +77,9 @@ workflows:
   lint_test:
     jobs:
       - checkout_install
+      - lint:
+          requires:
+            - checkout_install
       - test_web_components
 
   daily_storybook_deploy:
@@ -89,4 +92,5 @@ workflows:
                 - master
     jobs:
       - storybook_web_components
+
 
