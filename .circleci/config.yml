@@ -33,10 +33,6 @@ jobs:
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
     steps:
-      - persist_to_workspace:
-         root: ~/project
-         paths:
-          - .
       - checkout
       - node/install-packages:
           pkg-manager: "yarn"
@@ -46,6 +42,10 @@ jobs:
       - run:
           name: Upload Codecov report
           command: bash <(curl -s https://codecov.io/bash)
+      - persist_to_workspace:
+         root: ~/project
+         paths:
+          - .   
   build:
     # These next lines define a docker executor: https://circleci.com/docs/2.0/executor-types/
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
