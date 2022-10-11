@@ -43,6 +43,9 @@ jobs:
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
     steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: "yarn"
       - run:
           name: Run unit tests
           command: yarn run test:ci
