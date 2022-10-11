@@ -1,0 +1,15 @@
+name: "coverage"
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: codecov/codecov-action@v3
+        with:
+          token: 74a68862-8d09-4d8f-a650-5a9cf4fc7452 # not required for public repos
+
