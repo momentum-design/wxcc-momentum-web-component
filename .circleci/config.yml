@@ -6,43 +6,37 @@ executors:
   node-cypress:
     docker:
       - image: "cypress/included:8.7.0"
+    working_directory: ~/project
 
 orbs:
-  # The Node.js orb contains a set of prepackaged CircleCI configuration you can utilize
-  # Orbs reduce the amount of configuration required for common tasks.
-  # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/node
   node: circleci/node@5
   cypress: cypress-io/cypress@2.1.0
 
 jobs:
-  # Below is the definition of your job to test your Node app. You can rename and customize it as you want.
   static-analysis:
-    # These next lines define a docker executor: https://circleci.com/docs/2.0/executor-types/
-    # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # A list of available CircleCI docker Convenience Images are available here: https://circleci.com/developer/images/image/cimg/node
     docker:
       - image: cimg/node:14.20
-    # Then run your tests!
-    # CircleCI will report the results back to your VCS provider.
     steps:
-      # Checkout the code as the first step.
+      - persist_to_workspace:
+         root: ~/project
+         paths:
+          - .
       - checkout
-      # Next, the node orb's install-packages step will install the dependencies from a package.json.
-      # The orb install-packages step will also automatically cache them for faster future runs.
       - node/install-packages:
           pkg-manager: "yarn"
       - run:
           name: lint analysis
           command: yarn lint
   unit-tests:
-    # These next lines define a docker executor: https://circleci.com/docs/2.0/executor-types/
-    # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # A list of available CircleCI docker Convenience Images are available here: https://circleci.com/developer/images/image/cimg/node
     docker:
       - image: cimg/node:14.20
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
     steps:
+      - persist_to_workspace:
+         root: ~/project
+         paths:
+          - .
       - checkout
       - node/install-packages:
           pkg-manager: "yarn"
@@ -61,6 +55,8 @@ jobs:
     # Then run your tests!
     # CircleCI will report the results back to your VCS provider.
     steps:
+      - attach_workspace:
+          at: ~/project
       - run:
           name: Build web components library
           command: yarn dist
