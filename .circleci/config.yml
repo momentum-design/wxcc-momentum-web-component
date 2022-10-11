@@ -32,8 +32,8 @@ jobs:
       - node/install-packages:
           pkg-manager: "yarn"
       - run:
-          name: Sonar analysis
-          command: yarn sonar
+          name: lint analysis
+          command: yarn lint
   unit-tests:
     # These next lines define a docker executor: https://circleci.com/docs/2.0/executor-types/
     # You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
@@ -96,13 +96,9 @@ workflows:
   # For more details on extending your workflow, see the configuration docs: https://circleci.com/docs/2.0/configuration-reference/#workflows
   build:
     jobs:
-      - static-analysis
-      - unit-tests:
-         requires:
-          - static-analysis
+      - unit-tests
       - build:
          requires:
-          - static-analysis
           - unit-tests
       # For running simple node tests, you could optionally instead use the node/test job from the orb to replicate and replace the manually defined "test" job above in fewer lines.
       # - node/test
