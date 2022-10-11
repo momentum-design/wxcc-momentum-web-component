@@ -97,8 +97,13 @@ workflows:
   build:
     jobs:
       - static-analysis
-      - unit-tests
-      - build
+      - unit-tests:
+         requires:
+          - static-analysis
+      - build:
+         requires:
+          - static-analysis
+          - unit-tests
       # For running simple node tests, you could optionally instead use the node/test job from the orb to replicate and replace the manually defined "test" job above in fewer lines.
       # - node/test
   daily_storybook_deploy:
